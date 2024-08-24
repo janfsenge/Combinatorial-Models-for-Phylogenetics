@@ -1,0 +1,55 @@
+\documentclass[]{standalone}
+
+\usepackage{tikz}
+\usepackage{tikz-network}
+\usetikzlibrary{positioning, backgrounds, calc, arrows.meta, shapes, matrix}
+% \usepackage{graphicx}
+
+\tikzset{inputnode/.style={shape=rectangle, draw, align=left, font=\bfseries\itshape}}
+\tikzset{outputnode/.style={shape=rounded rectangle, draw, align=left, font=\bfseries}}
+\tikzset{inside/.style={align=center}}
+\tikzset{invariant/.style={shape=ellipse, draw, align=left, font=\bfseries}}
+\tikzset{singlearrow/.style={-{Latex[length=2mm,width=1.5mm]}, thick}}
+\tikzset{doublearrow/.style={{Latex[length=2mm,width=1.5mm]}-{Latex[length=2mm,width=1.5mm]}, thick}}
+\begin{document}
+%
+\scalebox{2}{%
+\begin{tikzpicture}
+\pgfmathsetmacro{\ydist}{2}
+\pgfmathsetmacro{\xdist}{3}
+\node[inputnode] (treegram) at (0,0) {Treegram(s)};
+\node[inputnode] (dendrogram) at (0, 0.5*\ydist) {Dendrogram(s)};
+\node[inputnode] (distmat) at (\xdist, \ydist) {Distance matrix};
+\node[inputnode] (filt) at (\xdist, -\ydist) {Filtration};
+
+\node[inside] (ultramatrix) at (\xdist,0) {list of\\ultramatrices};
+\node[inside] (minimizer) at (2*\xdist, 0) {Minimizer\\matrix};
+\node[inside] (phylonet) at (2.75*\xdist, 1*\ydist) {Phylogenetic\\network (matrix)};
+
+\node[outputnode] (cliquegram) at (4*\xdist, \ydist) {Cliquegram};
+\node[inside, font=\footnotesize, inner sep=0pt, anchor=north] (joincliquegram) at (cliquegram.south) {join-cliquegram};
+\node[outputnode] (facegram) at (4*\xdist, -\ydist) {Facegram};
+\node[inside, font=\footnotesize, inner sep=0pt, anchor=south] (joinfacegram) at (facegram.north) {join-facegram};
+
+\node[invariant] (mergegram) at (5*\xdist, 0) {Mergegram};
+
+% arrows
+\draw[singlearrow] (dendrogram) -- (treegram);
+\draw[singlearrow] (ultramatrix) -- (minimizer);
+\draw[singlearrow] (distmat) -- (phylonet);
+\draw[singlearrow] (cliquegram) -| (mergegram);
+\draw[singlearrow] (facegram) -| (mergegram);
+\draw[singlearrow] ($(treegram.south)!0.25!(treegram.south east)$) |- ($(minimizer.south) + (0, -0.25*\ydist)$) -| (2.75*\xdist, 0) -- (mergegram);
+
+\draw[singlearrow, dotted] (distmat) -| (dendrogram);
+\draw[singlearrow, dashed] (minimizer) |- (joincliquegram);
+\draw[singlearrow, dashed] (ultramatrix) |- (joinfacegram);
+\draw[singlearrow, dashed] (treegram) |- (joinfacegram);
+
+\draw[doublearrow] (treegram) -- (ultramatrix);
+\draw[doublearrow] (phylonet) -- (cliquegram);
+\draw[doublearrow] (filt) -- (facegram);
+
+\end{tikzpicture}%
+}
+\end{document}
