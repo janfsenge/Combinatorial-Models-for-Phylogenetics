@@ -4,7 +4,7 @@
 
 The code consists of implementations of computing the mergegram invariant of different concepts introduced in the paper. We exploit their relationships as seen in the following image
 
-![image](latex/concepts_overview_connections.pdf)
+![image](concepts_overview_connections.png)
 
 It should be noted, that given one treegram, the mergegram of the treegram is the same as the mergegram of the join-cliquegram of the treegram as well as the mergegram of the join-facegram of the treegram. 
 
